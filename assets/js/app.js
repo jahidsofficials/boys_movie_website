@@ -12,10 +12,13 @@ right_btn.addEventListener('click', () => {
 })
 
 let video = document.getElementById('video');
-let base_url =  video.getAttribute('url');
+let base_url = video.getAttribute('url');
 let json_url = `${base_url}/assets/json/movie.json`;
 
-fetch(json_url).then(Response => Response.json())
+
+let api_url = `${base_url}index.php/welcome/getMovies`;
+
+fetch(api_url+'?limit=10&offset=0').then(Response => Response.json())
     .then((data) => {
         data.forEach((ele, i) => {
             let { name, imdb, date, sposter, bposter, genre, url } = ele;
@@ -23,9 +26,9 @@ fetch(json_url).then(Response => Response.json())
             card.classList.add('card');
             card.href = url;
             card.innerHTML = `
-            <img src="${base_url}/assets/${sposter}" alt="${name}" class="poster">
+            <img src="${base_url}assets/img/${sposter}" alt="${name}" class="poster">
             <div class="rest_card">
-                <img src="${base_url}/assets/${bposter}" alt="">
+                <img src="${base_url}assets/img/${bposter}" alt="">
                 <div class="cont">
                     <h4>${name}</h4>
                     <div class="sub">
@@ -43,44 +46,39 @@ fetch(json_url).then(Response => Response.json())
         document.getElementById('date').innerText = data[0].date;
         document.getElementById('rate').innerHTML = `<span>IMDB</span><i class="bi bi-star-fill"></i> ${data[0].imdb}`;
 
-        // search data  load 
-        data.forEach(element => {
-            let { name, imdb, date, sposter, genre, url } = element;
-            let card = document.createElement('a');
-            card.classList.add('card');
-            card.href = url;
-            card.innerHTML = `
-            <img src="${base_url}/assets/${sposter}" alt="">
-                        <div class="cont">
-                            <h3>${name} </h3>
-                            <p>${genre}, ${date} , <span>IMDB</span><i class="bi bi-star-fill"></i> ${imdb}</p>
-                        </div>
-            `
-            search.appendChild(card);
-        });
+
+        let searchData = async (value) => {
+            search.innerHTML = '';
+            try {
+                await fetch(api_url+`?limit=10&offset=0&value=${value}`).then(Response => Response.json())
+                    .then((result) => {
+                        // search data  load 
+                        result.forEach(element => {
+                            console.log(result)
+                            let { name, imdb, date, sposter, genre, url } = element;
+                            let card = document.createElement('a');
+                            card.classList.add('card');
+                            card.href = url;
+                            card.innerHTML = `
+                           <img src="${base_url}/assets/img/${sposter}" alt="">
+                           <div class="cont">
+                               <h3>${name} </h3>
+                               <p>${genre}, ${date} , <span>IMDB</span><i class="bi bi-star-fill"></i> ${imdb}</p>
+                           </div>
+                        `;
+                            search.appendChild(card);
+                        });
+                    })
+            } catch (error) {
+                console.log(error);
+            }
+
+        }
 
         // search filter  
-
         search_input.addEventListener('keyup', () => {
-            let filter = search_input.value.toUpperCase();
-            let a = search.getElementsByTagName('a');
-
-            for (let index = 0; index < a.length; index++) {
-                let b = a[index].getElementsByClassName('cont')[0];
-                // console.log(a.textContent)
-                let TextValue = b.textContent || b.innerText;
-                if (TextValue.toUpperCase().indexOf(filter) > -1) {
-                    a[index].style.display = "flex";
-                    search.style.visibility = "visible";
-                    search.style.opacity = 1;
-                } else {
-                    a[index].style.display = "none";
-                }
-                if (search_input.value == 0) {
-                    search.style.visibility = "hidden";
-                    search.style.opacity = 0;
-                }
-            }
+            let filter = search_input.value;
+            searchData(filter);
         })
 
         let video = document.getElementsByTagName('video')[0];

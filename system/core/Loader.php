@@ -51,6 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class CI_Loader {
 
+	public $db;
 	public $load;
 	public $benchmark;
 	public $hooks;
