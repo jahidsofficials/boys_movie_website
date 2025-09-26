@@ -14,6 +14,10 @@ class Welcome extends CI_Controller {
     {
         $this->load->view('index');
     }
+    public function movie_deatils()
+    {
+        $this->load->view('movie-deatils');
+    }
 
     public function getMovies()
     {
@@ -31,6 +35,26 @@ class Welcome extends CI_Controller {
         }
         if ($value) {
             $this->db->like('name', $value);
+        }
+
+        $query  = $this->db->get();
+        $result = $query->result_array();
+
+        // Return JSON
+        header('Content-Type: application/json');
+        echo json_encode($result);
+    }
+    public function getFindMovies()
+    {
+        // Get params from frontend
+        $id = $this->input->get('id');
+   
+        // Base query
+        $this->db->select('*');
+        $this->db->from('movies');
+
+        if ($id) {
+            $this->db->where('id' , $id );
         }
 
         $query  = $this->db->get();

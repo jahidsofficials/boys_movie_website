@@ -43,7 +43,6 @@
                             <p>Action, 2021 , <span>IMDB</span><i class="bi bi-star-fill"></i> 9.6</p>
                         </div>
                     </a> -->
-
                 </div>
             </div>
         </nav>
@@ -84,23 +83,26 @@
             </div>
         </section>
     </header>
-    <script src="app.js"></script>
+     <!-- JS -->
+    <script src="<?= base_url('/assets/js/app.js')?>"></script>
     <script>
-        fetch(json_url).then((Response) => Response.json())
+        let api_url_find_movie = `${base_url}index.php/welcome/getFindMovies`;
+        fetch(api_url_find_movie+`?id=${window.location.href.split('?')[1]}`).then((Response) => Response.json())
             .then(data => {
-                let movie_array = data.filter(ele => {
-                    return ele.name === "The Boys";
-                });
+                console.log(data)
+                // let data = data.filter(ele => {
+                //     return ele.name === "The Boys";
+                // });
 
-                document.getElementById('title').innerText = movie_array[0].name;
-                // document.getElementsByTagName('video')[0].setAttribute('src', movie_array[0].trailer)
+                document.getElementById('title').innerText = data[0].name;
+                // document.getElementsByTagName('video')[0].setAttribute('src', data[0].trailer)
                 // document.getElementsByTagName('video')[0].play();
-                document.getElementById('low_q').href = movie_array[0].low;
-                document.getElementById('medium_q').href = movie_array[0].medium;
-                document.getElementById('high_q').href = movie_array[0].high;
-                document.getElementById('gen').innerText = movie_array[0].genre;
-                document.getElementById('date').innerText = movie_array[0].date;
-                document.getElementById('rate').innerHTML = `<span>IMDB</span><i class="bi bi-star-fill"></i> ${movie_array[0].imdb}`;
+                document.getElementById('low_q').href = data[0].low;
+                document.getElementById('medium_q').href = data[0].medium;
+                document.getElementById('high_q').href = data[0].high;
+                document.getElementById('gen').innerText = data[0].genre;
+                document.getElementById('date').innerText = data[0].date;
+                document.getElementById('rate').innerHTML = `<span>IMDB</span><i class="bi bi-star-fill"></i> ${data[0].imdb}`;
 
             })
     </script>

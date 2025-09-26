@@ -1,17 +1,4 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-
-    # If your project is in a subfolder, change this to /subfolder/
-    RewriteBase /
-
-    # Send request to index.php if file/folder doesn't exist
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php/$1 [L]
-
-</IfModule>
-
-<IfModule !mod_rewrite.c>
-    # If mod_rewrite is not enabled
-    ErrorDocument 404 /index.php
-</IfModule>
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]

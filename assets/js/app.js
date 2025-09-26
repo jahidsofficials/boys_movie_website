@@ -13,7 +13,7 @@ right_btn.addEventListener('click', () => {
 
 let video = document.getElementById('video');
 let base_url = video.getAttribute('url');
-let json_url = `${base_url}/assets/json/movie.json`;
+// let json_url = `${base_url}/assets/json/movie.json`;
 
 
 let api_url = `${base_url}index.php/welcome/getMovies`;
@@ -21,10 +21,10 @@ let api_url = `${base_url}index.php/welcome/getMovies`;
 fetch(api_url+'?limit=10&offset=0').then(Response => Response.json())
     .then((data) => {
         data.forEach((ele, i) => {
-            let { name, imdb, date, sposter, bposter, genre, url } = ele;
+            let { name, imdb, date, sposter, bposter, genre, url, id } = ele;
             let card = document.createElement('a');
             card.classList.add('card');
-            card.href = url;
+             card.href = base_url+`movie_deatils?${id}`;
             card.innerHTML = `
             <img src="${base_url}assets/img/${sposter}" alt="${name}" class="poster">
             <div class="rest_card">
@@ -55,10 +55,10 @@ fetch(api_url+'?limit=10&offset=0').then(Response => Response.json())
                         // search data  load 
                         result.forEach(element => {
                             console.log(result)
-                            let { name, imdb, date, sposter, genre, url } = element;
+                            let { name, imdb, date, sposter, genre, url , id} = element;
                             let card = document.createElement('a');
                             card.classList.add('card');
-                            card.href = url;
+                            card.href = base_url+`movie_deatils?${id}`;
                             card.innerHTML = `
                            <img src="${base_url}/assets/img/${sposter}" alt="">
                            <div class="cont">
@@ -104,10 +104,10 @@ fetch(api_url+'?limit=10&offset=0').then(Response => Response.json())
             });
 
             series_array.forEach((ele, i) => {
-                let { name, imdb, date, sposter, bposter, genre, url } = ele;
+                let { name, imdb, date, sposter, bposter, genre, url , id } = ele;
                 let card = document.createElement('a');
                 card.classList.add('card');
-                card.href = url;
+                card.href = base_url+`movie_deatils?${id}`;
                 card.innerHTML = `
                 <img src="${sposter}" alt="${name}" class="poster">
                 <div class="rest_card">
@@ -134,10 +134,10 @@ fetch(api_url+'?limit=10&offset=0').then(Response => Response.json())
             });
 
             movie_array.forEach((ele, i) => {
-                let { name, imdb, date, sposter, bposter, genre, url } = ele;
+                let { name, imdb, date, sposter, bposter, genre, url , id} = ele;
                 let card = document.createElement('a');
                 card.classList.add('card');
-                card.href = url;
+                card.href = base_url+`movie_deatils?${id}`;
                 card.innerHTML = `
                 <img src="${sposter}" alt="${name}" class="poster">
                 <div class="rest_card">
